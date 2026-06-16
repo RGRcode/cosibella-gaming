@@ -1,0 +1,188 @@
+.catalog-seciton{
+    padding:40px 0;
+}
+
+.catalog-loader{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding:50px 0;
+    gap: 20px;
+
+    .tech-spinner{
+        width:50px;
+        height: 50px;
+        border: 3px solid rgba($color-accent, 0.1);
+        border-radius: 50%;
+        border-top-color: $color-accent;
+        animation: spin 1s linear infinite;
+        box-shadow: 0 0 15px rgba($color-accent, 0.2);
+    }
+    .loader-text{
+        color: $color-text-muted;
+        font-size:15px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+}
+
+.catalog-messasge{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(#ff3333, 0.05);
+    border: 1px solid rgba(#ff3333, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+
+    .message-icon{
+        font-size:25px;
+    }
+    .message-text{
+        color:#ff6666;
+        font-size: 15px;
+        font-weight: 500;
+    }
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px, 1fr));
+    gap:30px;
+}
+.product-card{
+    background-color: $color-bg-card;
+    border:1px solid rgba($color-text-muted, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position:relative;
+    transition: all 0.3s ease-in-out;
+
+    &:hover{
+        transform: translateY(-5px);
+        border-color: rgba($color-accent, 0.5);
+        box-shadow: 0 10px 20px rgba($color-bg-main,0.5);
+    }
+
+    .card-status{
+        position:absolute;
+        top:15px;
+        right: 15px;
+        font-size:10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding:5px 10px;
+        border-radius: 5px;
+        letter-spacing: 0.5px;
+
+        &.badge-avaliable{
+            background: rgba(#00ff66,0.1);
+            color:#00ff66;
+            border: 1px solid rgba(#00ff66,0.2);
+        }
+        &.badge-unavailable{
+            background-color: rgba(#ff3333,0.1);
+            color: #ff3333;
+            border:1px solid rgba(#ff3333,0.2);
+        }
+    }
+
+    .card-body{
+        padding:25px;
+        padding-top:40px;
+        display:flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    .product-id{
+        font-size:10px;
+        font-weight: 700;
+        color: $color-text-muted;
+    }
+    .product-category{
+        font-size:15px;
+        font-weight: 600;
+        color: $color-accent;
+        text-transform: uppercase;
+        margin-top: 4px;
+        letter-spacing: 0.5px;
+    }
+    .product-title{
+        font-size:20px;
+        font-weight: 700;
+        margin-top:10px;
+        line-height: 1.5;
+    }
+    .product-description{
+        color:$color-text-muted;
+        font-size:15px;
+        line-height: 1.5;
+        margin-top:15px;
+        display:-webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-tags{
+        display: flex;
+        flex-wrap:wrap;
+        gap:5px;
+        margin-top:15px;
+        
+        .tag{
+            background: rgba($color-text-muted,0.1);
+            color:$color-text-muted;
+            font-size:10px;
+            padding:2px 10px;
+            border-radius: 4px;
+        }
+    }
+    .card-footer{
+        padding:20px 25px;
+        border-top: 1px solid rgba($color-text-muted,0.1);
+        background-color: rgba($color-bg-main,0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .product-price{
+        font-size:20px;
+        font-weight: 800;
+        
+        .curency{
+            font-size:15px;
+            color:$color-text-muted;
+            font-weight: 500;
+        }
+    }
+
+    .details-btn{
+        background-color: transparent;
+        color:$color-text-main;
+        border:1px solid rgba($color-text-muted,0.3);
+        padding:5px 10px;
+        border-radius: 5px;
+        font-family: $font-main;
+        font-size:15px;
+        font-weight: 600;
+        cursor:pointer;
+        transition: all 0.2s ease-in-out;
+
+        &:hover{
+            background-color: $color-text-main;
+            color:$color-bg-main;
+            border-color: $color-text-main;
+        }
+    }
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

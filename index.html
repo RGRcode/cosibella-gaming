@@ -18,5 +18,64 @@
             </div>
         </div>
     </header>
+
+    <main>
+        <section class="control-panel">
+            <div class="container panel-flex">
+                <div class="control-box">
+                    <label for="category-select" class="panel-label">Wybierz kategorię</label>
+                    <div class="custom-select-box">
+                        <select id="category-select" class="panel-select">
+                            <option value="all">Wszystkie sprzęty</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-box">
+                    <div class="panel-price-info">
+                        <span class="panel-label">Maksymalny budżet</span>
+                        <span class="price-badge"><span id="price-value">2000</span>PLN</span>
+                    </div>
+                    <input type="range" id="price-max" class="panel-range" min="0" max="2000" step="50" value="2000">
+                </div>
+            </div>
+        </section>
+
+
+        <section class="catalog-section">
+            <div class="container">
+                <div id="app-loader" class="catalog-loader">
+                    <div class="tech-spinner"></div>
+                    <p class="loader-text">Inicjalizacja protokołu-pobieranie danych</p>
+                </div>
+
+                <div id="app-message" class="catalog-message error-box" style="display:none;">
+                    <span class="message-icon">⚠️</span>
+                    <p class="message-text">Błąd połączenia z bazą danych. Spróbuj odświeżyć stronę.</p>
+                </div>
+
+            </div>
+            
+            <div id="products-grid" class="products-grid">
+            
+            <article class="product-card">
+                <div class="card-status badge-available">Dostępny</div>
+                <div class="card-body">
+                    <span class="product-id">#1</span>
+                    <span class="product-category">Peryferia</span>
+                    <h3 class="product-title">Klawiatura mechaniczna TKL</h3>
+                    <p class="product-description">Kompaktowa klawiatura mechaniczna bez sekcji numerycznej. Przełączniki Cherry MX Red, podświetlenie RGB.</p>
+                    <div class="product-tags">
+                        <span class="tag">mechaniczna</span>
+                        <span class="tag">gaming</span>
+                        <span class="tag">tkl</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="product-price">349.99 <span class="currency">PLN</span></span>
+                    <button class="details-btn">Szczegóły</button>
+                </div>
+        </section>
+    </main>
 </body>
 </html>

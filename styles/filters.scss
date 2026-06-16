@@ -1,0 +1,126 @@
+.control-panel{
+    background-color: ($color-bg-card,0.4);
+    border-bottom: 1px solid rgba($color-text-muted, 0.1);
+    padding:30px 0;
+
+    .panel-flex{
+        display: flex;
+        gap: 40px;
+        align-items: center;
+
+        @media(max-width: 768px){
+            flex-direction: column;
+            align-items: stretch;
+            gap:20px;
+        }
+    }
+    .control-box{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+    }
+    .panel-label{
+        font-size:11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color:$color-text-muted;
+    }
+    .custom-select-box{
+        position:relative;
+
+        &::after{
+            content:'▾';
+            position:absolute;
+            right:15px;
+            top:50%;
+            transform: translateY(-50%);
+            color:$color-accent;
+            pointer-events: none;
+            font-size:15px;
+        }
+    }
+    
+    .panel-select{
+        width:100%;
+        background-color: $color-bg-card;
+        color:$color-text-main;
+        border: 1px solid rgba($color-text-muted, 0.2);
+        padding: 15px 15px;
+        border-radius: 10px;
+        font-family: $font-main;
+        font-size:15px;
+        font-weight: 500;
+        appearance: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    &:focus{
+        outline: none;
+        border-color: $color-accent;
+        box-shadow: 0 0 10px rgba($color-accent, 0.15);
+    }
+    option{
+        background-color: $color-bg-card;
+        color:$color-text-main;
+    }
+}
+
+.panel-price-info{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+.price-badge{
+    font-size: 15px;
+    font-weight: 700;
+    color: $color-accent;
+    padding:5px 10px;
+    border-radius: 5px;
+    border: 1px solid rgba($color-accent, 0.2);
+}
+
+.panel-range{
+    -webkit-appearance: none;
+    width:100%;
+    height:5px;
+    background-color: rgba($color-text-muted, 0.2);
+    border-radius: 5px;
+    outline:none;
+    margin:15px 0;
+
+    &::-webkit-slider-thumb{
+        -webkit-appearance: none;
+        appearance: none;
+        width:15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: $color-accent;
+        cursor:pointer;
+        box-shadow: 0 0 10px $color-accent;
+        transition: all 0.1s;
+
+        &:hover{
+            transform: scale(1.2);
+            background-color: #fff;
+        }
+    }
+
+    &::-moz-range-thumb{
+                -webkit-appearance: none;
+        appearance: none;
+        width:15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: $color-accent;
+        cursor:pointer;
+        box-shadow: 0 0 10px $color-accent;
+        transition: all 0.1s;
+
+        &:hover{
+            transform: scale(1.2);   
+            background-color: #fff;
+        }
+    }
+}

@@ -34,48 +34,78 @@
                 <div class="control-box">
                     <div class="panel-price-info">
                         <span class="panel-label">Maksymalny budżet</span>
-                        <span class="price-badge"><span id="price-value">2000</span>PLN</span>
+                        <span class="price-badge"><span id="price-value">2000</span> PLN</span>
                     </div>
                     <input type="range" id="price-max" class="panel-range" min="0" max="2000" step="50" value="2000">
                 </div>
             </div>
         </section>
 
-
         <section class="catalog-section">
-            <div class="container">
-                <div id="app-loader" class="catalog-loader">
+            <div class="container"> <div id="app-loader" class="catalog-loader">
                     <div class="tech-spinner"></div>
-                    <p class="loader-text">Inicjalizacja protokołu-pobieranie danych</p>
+                    <p class="loader-text">Inicjalizacja protokołu - pobieranie danych</p>
                 </div>
 
-                <div id="app-message" class="catalog-message error-box" style="display:none;">
+                <div id="app-message" class="catalog-message" style="display:none;">
                     <span class="message-icon">⚠️</span>
                     <p class="message-text">Błąd połączenia z bazą danych. Spróbuj odświeżyć stronę.</p>
                 </div>
 
-            </div>
-            
-            <div id="products-grid" class="products-grid">
-            
-            <article class="product-card">
-                <div class="card-status badge-available">Dostępny</div>
-                <div class="card-body">
-                    <span class="product-id">#1</span>
-                    <span class="product-category">Peryferia</span>
-                    <h3 class="product-title">Klawiatura mechaniczna TKL</h3>
-                    <p class="product-description">Kompaktowa klawiatura mechaniczna bez sekcji numerycznej. Przełączniki Cherry MX Red, podświetlenie RGB.</p>
-                    <div class="product-tags">
-                        <span class="tag">mechaniczna</span>
-                        <span class="tag">gaming</span>
-                        <span class="tag">tkl</span>
+                <div id="products-grid" class="products-grid">
+                    <article class="product-card">
+                        <div class="card-status badge-available">Dostępny</div>
+                        <div class="card-body">
+                            <span class="product-id">#1</span>
+                            <span class="product-category">Peryferia</span>
+                            <h3 class="product-title">Klawiatura mechaniczna TKL</h3>
+                            <p class="product-description">Kompaktowa klawiatura mechaniczna bez sekcji numerycznej. Przełączniki Cherry MX Red, podświetlenie RGB.</p>
+                            <div class="product-tags">
+                                <span class="tag">mechaniczna</span>
+                                <span class="tag">gaming</span>
+                                <span class="tag">tkl</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <span class="product-price">349.99 <span class="currency">PLN</span></span>
+                            <button class="details-btn">Szczegóły</button>
+                        </div>
+                    </article>
+                </div>
+
+                <nav class="catalog-pagination">
+                    <button id="btn-prev" class="pagination-arrow" disabled>&laquo; Poprzednia</button>
+                    <div id="pagination-pages" class="pagination-numbers">
+                        <button class="page-num active">1</button>
+                        <button class="page-num">2</button>
+                        <button class="page-num">3</button>
+                    </div>
+                    <button id="btn-next" class="pagination-arrow">Następna &raquo;</button>
+                </nav>
+
+            </div> 
+        </section>
+        
+    </main>
+    <div id="product-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-window">
+            <button id="modal-close" class="modal-close-btn" aria-label="zamknij okno">&times;</button>
+
+            <div id="modal-content" class="modal-content-wrapper">
+                <div class="modal-header">
+                    <span class="modal-category">Peryferia</span>
+                    <h2 class="modal-title">Klawiatura mechaniczna TKL</h2>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-desc">Kompaktowa klawiatura mechaniczna bez sekcji numerycznej. Przełączniki Cherry MX Red, podświetlenie RGB, obudowa aluminiowa. Idealna do pracy i grania.</p>
+                    <div class="modal-specs">
+                        <div class="spec-item"><strong>ID</strong> <span>1</span></div>
+                        <div class="spec-item"><strong>Cena:</strong> <span class="text-highlight">349.99 PLN</span></div>
+                        <div class="spec-item"><strong>Status: </strong> <span class="text-success">Na magazynie</span></div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <span class="product-price">349.99 <span class="currency">PLN</span></span>
-                    <button class="details-btn">Szczegóły</button>
-                </div>
-        </section>
-    </main>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

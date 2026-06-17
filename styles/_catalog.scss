@@ -1,4 +1,4 @@
-.catalog-seciton{
+.catalog-section{
     padding:40px 0;
 }
 
@@ -27,7 +27,7 @@
     }
 }
 
-.catalog-messasge{
+.catalog-message{
     display: flex;
     align-items: center;
     gap: 16px;
@@ -47,7 +47,7 @@
     }
 }
 
-.product-grid{
+.products-grid{
     display:grid;
     grid-template-columns: repeat(auto-fill,minmax(280px, 1fr));
     gap:30px;
@@ -79,7 +79,7 @@
         border-radius: 5px;
         letter-spacing: 0.5px;
 
-        &.badge-avaliable{
+        &.badge-available{
             background: rgba(#00ff66,0.1);
             color:#00ff66;
             border: 1px solid rgba(#00ff66,0.2);
@@ -156,7 +156,7 @@
         font-size:20px;
         font-weight: 800;
         
-        .curency{
+        .currency{
             font-size:15px;
             color:$color-text-muted;
             font-weight: 500;
@@ -185,4 +185,69 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+
+
+.catalog-pagination{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+    margin-top:50px;
+    padding-top:30px;
+    border-top:1px solid $color-text-muted;
+
+    .pagination-arrow{
+        background:transparent;
+        color: $color-text-main;
+        border:1px solid rgba($color-text-muted,0.3);
+        padding:5px 10px;
+        border-radius: 5px;
+        font-family: $font-main;
+        font-size:15px;
+        font-weight: 600;
+        cursor:pointer;
+        transition: all 0.2s;
+
+        &:hover:not(:disabled){
+            border-color:$color-accent;
+            color:$color-accent;
+        }
+        &:disabled{
+            opacity:0.3;
+            cursor: not-allowed;
+        }
+    }
+    .pagination-numbers{
+        display:flex;
+        gap:5px;
+    }
+    .page-num{
+        background-color: rgba($color-bg-card,0.5);
+        color: $color-text-muted;
+        border: 1px solid rgba($color-text-muted, 0.3);
+        width:30px;
+        height: 30px;
+        border-radius: 5px;
+        font-family: $font-main;
+        font-size:15px;
+        font-weight: 600;
+        cursor:pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:all 0.2s;
+
+        &:hover:not(.active){
+            border-color: $color-text-main;
+            color: $color-text-main;
+        }
+        &.active{
+            background-color: $color-accent;
+            color: $color-bg-main;
+            border-color: $color-accent;
+            box-shadow: 0 0 10px $color-accent;
+        }
+    }
 }

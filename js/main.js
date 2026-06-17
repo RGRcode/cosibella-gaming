@@ -17,7 +17,11 @@ const DOM ={
     grid: document.getElementById('products-grid'),
     categorySelect: document.getElementById('category-select'),
     priceMax: document.getElementById('price-max'),
-    priceValue: document.getElementById('price-value')
+    priceValue: document.getElementById('price-value'),
+
+    btnPrev: document.getElementById('btn-prev'),
+    btnNext: document.getElementById('btn-next'),
+    paginationPages: document.getElementById('pagination-pages')
 }
 
 async function loadCatalogData(){
@@ -60,16 +64,20 @@ function renderProducts(productsToRender){
         DOM.grid.style.display='none';
         DOM.message.style.display='flex';
         DOM.message.querySelector('.message-text').innerText=`Brak produktów spełniających wybrane kryteria wyszukiwania. Spróbuj zmienić filtry`;
+        DOM.btnPrev.parentElement.style.display= 'none';
         return;
     }
 
     DOM.grid.style.display='grid';
     DOM.message.style.display='none';
 
-    const productsHTML = productsToRender.map(product =>{
+    const startIndex = (state.currentPage - 1) *state.productsPerPage;
+    const endIndex = startIndex + state.productsPerPage;
+    const paginatedProducts = productsToRender.slice(startIndex,endIndex);
+
+    const productsHTML = paginatedProducts.map(product =>{
         const statusClass = product.stock ? 'badge-available' : 'badge-unavailable';
         const statusText = product.stock ? 'Dostępny' : 'Wyprzedane';
-
         const tagsHTML = product.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
         return `
             <article class="product-card" data-id="${product.id}">
@@ -90,9 +98,8 @@ function renderProducts(productsToRender){
             </article>
         `;
     }).join('');
-
     DOM.grid.innerHTML = productsHTML;
-
+    renderPagination();
 }
 
 
@@ -122,6 +129,27 @@ function initEventListeners(){
     DOM.categorySelect.addEventListener('change', () =>{
     filterProducts();
     });
+
+    DOM.btnPrev.addEventListener('click', () =>{
+        if(state.currentPage > 1){
+            state.currentPage--;
+            renderProducts(state.filteredProducts);
+        }
+    });
+    DOM.btnNext.addEventListener('click', () =>{
+        const totalPages = Math.ceil(state.filteredProducts.length / state.productsPerPage);
+        if(state.currentPage < totalPages){
+            state.currentPage++;
+            renderProducts(state.filteredProducts);
+        }
+    });
+    DOM.paginationPages.addEventListener('click', (event) =>{
+        if(event.target.classList.contains('page-num')){
+            const targetPage = parseInt(event.target.getAttribute('data-page'));
+            state.currentPage = targetPage;
+            renderProducts(state.filteredProducts);
+        }
+    });
 }
 
 
@@ -135,6 +163,31 @@ function setupCategoryFilter(){
     }).join('');
     DOM.categorySelect.innerHTML = `<option value="all">Wszystkie sprzęty</option>`+optionsHTML;
 }
+
+
+
+function renderPagination(){
+    const totalProducts = state.filteredProducts.length;
+    const totalPages = Math.ceil(totalProducts/state.productsPerPage);
+    
+    if(totalPages<=1){
+        DOM.btnPrev.parentElement.style.display = 'none';
+        return;
+    }else{
+        DOM.btnPrev.parentElement.style.display = 'flex';
+    }
+
+    DOM.btnPrev.disabled = state.currentPage === 1;
+    DOM.btnNext.disabled = state.currentPage === totalPages;
+
+    let pagesHTML ='';
+    for (let i=1; i <= totalPages; i++){
+        const activeClass = i === state.currentPage ? 'active' : '';
+        pagesHTML += `<button class="page-num ${activeClass}" data-page="${i}">${i}</button>`;
+    }
+    DOM.paginationPages.innerHTML = pagesHTML;
+}
+
 
 
 loadCatalogData();

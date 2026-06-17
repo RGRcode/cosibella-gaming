@@ -21,7 +21,11 @@ const DOM ={
 
     btnPrev: document.getElementById('btn-prev'),
     btnNext: document.getElementById('btn-next'),
-    paginationPages: document.getElementById('pagination-pages')
+    paginationPages: document.getElementById('pagination-pages'),
+
+    modal: document.getElementById('product-modal'),
+    modalBody: document.getElementById('modal-content'),
+    modalCloseBtn: document.getElementById('modal-close')
 }
 
 async function loadCatalogData(){
@@ -150,6 +154,22 @@ function initEventListeners(){
             renderProducts(state.filteredProducts);
         }
     });
+
+    DOM.grid.addEventListener('click', (event) =>{
+        const card = event.target.closest('.product-card');
+        if(card){
+            const productId = parseInt(card.getAttribute('data-id'));
+            openProductModal(productId);
+        }
+    });
+
+    DOM.modalCloseBtn.addEventListener('click', closeProductModal);
+    
+    DOM.modal.addEventListener('click', (event) =>{
+        if (event.target === DOM.modal){
+            closeProductModal();
+        }
+    })
 }
 
 
@@ -188,6 +208,37 @@ function renderPagination(){
     DOM.paginationPages.innerHTML = pagesHTML;
 }
 
+function openProductModal(productId){
+    const product = state.allProducts.find(p => p.id === productId);
+
+    if(!product) return;
+
+    const stockStatus = product.stock ? '<span class="text-success">Na magazynie (Dostępny)</span>' :  '<span class="text-danger">Brak w magazynie (Wyprzedane)</span>';
+
+    DOM.modalBody.innerHTML = `
+        <div class="modal-header">
+            <span class="modal-category">${product.category}</span>
+            <h2 class="modal-title">${product.name}</h2>
+        </div>
+        <div class="modal-body">
+            <p class="modal-desc">${product.description}</p>
+            <div class="modal-specs">
+                <div class="spec-item"><strong>ID produktu:</strong> <span>#${product.id}</span></div>
+                <div class="spec-item"><strong>Cena katalogowa:</strong> <span class="text-highlight">${product.price.toFixed(2)} PLN</span></div>
+                <div class="spec-item"><strong>Status zapasów:</strong> <span>${stockStatus}</span></div>
+                <div class="spec-item"><strong>Powiązane tagi:</strong> <span>${product.tags.join(', ')}</span></div>
+            </div>
+        </div>
+    `;
+    
+    DOM.modal.style.display='flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProductModal(){
+    DOM.modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
 
 
 loadCatalogData();

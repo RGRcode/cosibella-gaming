@@ -46,11 +46,16 @@ async function loadCatalogData(){
 
         setupCategoryFilter();
 
+        readURLParams();
+
+        const savedPage = state.currentPage;
+        filterProducts();
+        state.currentPage = savedPage;
+
         DOM.loader.style.display = 'none';
         DOM.grid.style.display = 'grid';
 
         console.log('Dane pobrane z sukcesem', state.allProducts);
-        renderProducts(state.filteredProducts);
     }catch(error){
         DOM.loader.style.display='none';
         DOM.message.style.display='flex';
@@ -106,22 +111,6 @@ function renderProducts(productsToRender){
     renderPagination();
 }
 
-
-function filterProducts(){
-    const maxPrice = parseFloat(DOM.priceMax.value);
-    const selectedCategory = DOM.categorySelect.value;
-
-    state.filteredProducts = state.allProducts.filter(product=>{
-        const matchesPrice = product.price <= maxPrice;
-        const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-
-        return matchesPrice && matchesCategory;
-    });
-
-    state.currentPage= 1;
-    renderProducts(state.filteredProducts);
-}
-
 function initEventListeners(){
     DOM.priceMax.addEventListener('input', (event) => {
         const currentPrice = event.target.value;
@@ -138,6 +127,7 @@ function initEventListeners(){
         if(state.currentPage > 1){
             state.currentPage--;
             renderProducts(state.filteredProducts);
+            updateURLParams();
         }
     });
     DOM.btnNext.addEventListener('click', () =>{
@@ -152,6 +142,7 @@ function initEventListeners(){
             const targetPage = parseInt(event.target.getAttribute('data-page'));
             state.currentPage = targetPage;
             renderProducts(state.filteredProducts);
+            updateURLParams();
         }
     });
 
@@ -160,6 +151,7 @@ function initEventListeners(){
         if(card){
             const productId = parseInt(card.getAttribute('data-id'));
             openProductModal(productId);
+            updateURLParams();
         }
     });
 
@@ -238,6 +230,58 @@ function openProductModal(productId){
 function closeProductModal(){
     DOM.modal.style.display = 'none';
     document.body.style.overflow = 'auto';
+}
+
+function updateURLParams(){
+    const params = new URLSearchParams();
+
+    if(state.filters.category !== 'all'){
+        params.set('category', state.filters.category);
+    }
+    if (state.filters.maxPrice !== 2000){
+        params.set('price', state.filters.maxPrice);
+    }
+    if (state.currentPage !== 1){
+        params.set('page', state.currentPage);
+    }
+
+    const newRelativePathQuery = params.toString() ? `?${params.toString()}` : window.location.pathname;
+
+    window.history.pushState({ path: newRelativePathQuery}, '', newRelativePathQuery);
+}
+
+function readURLParams(){
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has('category')){
+        state.filters.category = params.get('category');
+        DOM.categorySelect.value = state.filters.category;
+    }
+    
+    if(params.has('price')){
+        state.filters.maxPrice = parseFloat(params.get('price'));
+        DOM.priceMax.value = state.filters.maxPrice;
+        DOM.priceValue.innerText = state.filters.maxPrice;
+    }
+
+    if(params.has('page')){
+        state.currentPage = parseInt(params.get('page'));
+    }
+}
+
+function filterProducts(){
+    state.filters.maxPrice = parseFloat(DOM.priceMax.value);
+    state.filters.category = DOM.categorySelect.value;
+
+    state.filteredProducts = state.allProducts.filter(product => {
+        const matchesPrice = product.price <= state.filters.maxPrice;
+        const matchesCategory = state.filters.category === 'all' || product.category === state.filters.category;
+        return matchesPrice && matchesCategory;
+    });
+
+    state.currentPage = 1;
+    renderProducts(state.filteredProducts);
+    updateURLParams();
 }
 
 

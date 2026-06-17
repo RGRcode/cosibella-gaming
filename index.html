@@ -49,7 +49,8 @@
         </section>
 
         <section class="catalog-section">
-            <div class="container"> <div id="app-loader" class="catalog-loader">
+            <div class="container"> 
+                <div id="app-loader" class="catalog-loader">
                     <div class="tech-spinner"></div>
                     <p class="loader-text">Inicjalizacja protokołu - pobieranie danych</p>
                 </div>
@@ -80,14 +81,14 @@
                     </article>
                 </div>
 
-                <nav class="catalog-pagination">
-                    <button id="btn-prev" class="pagination-arrow" disabled>&laquo; <span class="btn-text">Poprzednia</span></button>
+                <nav class="catalog-pagination" aria-label="Nawigacja po stronach katalogu">
+                    <button id="btn-prev" class="pagination-arrow" aria-label="Poprzednia strona" disabled>&laquo; <span class="btn-text">Poprzednia</span></button>
                     <div id="pagination-pages" class="pagination-numbers">
                         <button class="page-num active">1</button>
                         <button class="page-num">2</button>
                         <button class="page-num">3</button>
                     </div>
-                    <button id="btn-next" class="pagination-arrow"><span class="btn-text">Następna</span> &raquo;</button>
+                    <button id="btn-next" class="pagination-arrow" aria-label="Następna strona"><span class="btn-text">Następna</span> &raquo;</button>
                 </nav>
 
             </div> 

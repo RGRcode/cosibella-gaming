@@ -40,6 +40,7 @@ async function loadCatalogData(){
         DOM.grid.style.display = 'grid';
 
         console.log('Dane pobrane z sukcesem', state.allProducts);
+        renderProducts(state.filteredProducts);
     }catch(error){
         DOM.loader.style.display='none';
         DOM.message.style.display='flex';
@@ -49,3 +50,46 @@ async function loadCatalogData(){
     }
 }
 loadCatalogData();
+
+
+function renderProducts(productsToRender){
+    DOM.grid.innerHTML='';
+
+    if(productsToRender.length === 0){
+        DOM.grid.style.display='none';
+        DOM.message.style.display='flex';
+        DOM.message.querySelector('.message-text').innerText=`Brak produktów spełnaijących wybrane kryteria wyszukiwania. Spróbuj zmienić filtry`;
+        return;
+    }
+
+    DOM.grid.style.display='grid';
+    DOM.message.style.display='none';
+
+    const productsHTML = productsToRender.map(product =>{
+        const statusClass = product.stock ? 'badge-available' : 'badge-unavailable';
+        const statusText = product.stock ? 'Dostępny' : 'Wyprzedane';
+
+        const tagsHTML = product.tags.map(tag => `<span class="tag>${tag}</span>"`).join('');
+        return `
+            <article class="product-card" data-id="${product.id}">
+                <div class="card-status ${statusClass}">${statusText}</div>
+                <div class="card-body">
+                    <span class="product-id">#${product.id}</span>
+                    <span class="product-category">${product.category}</span>
+                    <h3 class="product-title">${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-tags">
+                        ${tagsHTML}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="product-price">${product.price.toFixed(2)} <span class="currency">PLN</span></span>
+                    <button class="details-btn">Szczegóły</button>
+                </div>
+            </article>
+        `;
+    }).join('');
+
+    DOM.grid.innerHTML = productsHTML;
+
+}

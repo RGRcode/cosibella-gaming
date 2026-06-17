@@ -49,7 +49,6 @@ async function loadCatalogData(){
         console.error('Błąd pobierania danych', error);
     }
 }
-loadCatalogData();
 
 
 function renderProducts(productsToRender){
@@ -69,7 +68,7 @@ function renderProducts(productsToRender){
         const statusClass = product.stock ? 'badge-available' : 'badge-unavailable';
         const statusText = product.stock ? 'Dostępny' : 'Wyprzedane';
 
-        const tagsHTML = product.tags.map(tag => `<span class="tag>${tag}</span>"`).join('');
+        const tagsHTML = product.tags.map(tag => `<span class="tag>${tag}</span>`).join('');
         return `
             <article class="product-card" data-id="${product.id}">
                 <div class="card-status ${statusClass}">${statusText}</div>
@@ -93,3 +92,32 @@ function renderProducts(productsToRender){
     DOM.grid.innerHTML = productsHTML;
 
 }
+
+
+function filterProducts(){
+    const maxPrice = parseFloat(DOM.priceMax.value);
+    const selectedCategory = DOM.categorySelect.value;
+
+    state.filteredProducts = state.allProducts.filter(product=>{
+        const matchesPrice = product.price <= maxPrice;
+        const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+
+        return matchesPrice && matchesCategory;
+    });
+
+    state.currentPage= 1;
+    renderProducts(state.filteredProducts);
+}
+
+function initEventListeners(){
+    DOM.priceMax.addEventListener('input', (event) => {
+        const currentPrice = event.target.value;
+        DOM.priceValue.innerText = currentPrice;
+
+        filterProducts();
+    })
+}
+
+
+loadCatalogData();
+initEventListeners();

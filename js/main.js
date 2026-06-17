@@ -25,7 +25,9 @@ const DOM ={
 
     modal: document.getElementById('product-modal'),
     modalBody: document.getElementById('modal-content'),
-    modalCloseBtn: document.getElementById('modal-close')
+    modalCloseBtn: document.getElementById('modal-close'),
+
+    searchInput: document.getElementById('search-input')
 }
 
 async function loadCatalogData(){
@@ -48,9 +50,7 @@ async function loadCatalogData(){
 
         readURLParams();
 
-        const savedPage = state.currentPage;
-        filterProducts();
-        state.currentPage = savedPage;
+        filterProducts(false);
 
         DOM.loader.style.display = 'none';
         DOM.grid.style.display = 'grid';
@@ -112,6 +112,9 @@ function renderProducts(productsToRender){
 }
 
 function initEventListeners(){
+    DOM.searchInput.addEventListener('input', () =>{
+        filterProducts();
+    })
     DOM.priceMax.addEventListener('input', (event) => {
         const currentPrice = event.target.value;
         DOM.priceValue.innerText = currentPrice;
@@ -135,6 +138,7 @@ function initEventListeners(){
         if(state.currentPage < totalPages){
             state.currentPage++;
             renderProducts(state.filteredProducts);
+            updateURLParams();
         }
     });
     DOM.paginationPages.addEventListener('click', (event) =>{
@@ -151,7 +155,6 @@ function initEventListeners(){
         if(card){
             const productId = parseInt(card.getAttribute('data-id'));
             openProductModal(productId);
-            updateURLParams();
         }
     });
 
@@ -234,7 +237,12 @@ function closeProductModal(){
 
 function updateURLParams(){
     const params = new URLSearchParams();
+    const searchQuery = DOM.searchInput.value.trim();
 
+
+    if(searchQuery){
+        params.set('search',searchQuery);
+    }
     if(state.filters.category !== 'all'){
         params.set('category', state.filters.category);
     }
@@ -244,14 +252,20 @@ function updateURLParams(){
     if (state.currentPage !== 1){
         params.set('page', state.currentPage);
     }
+    const queryString = params.toString() ? `?${params.toString()}` : '';
+    const newUrl = window.location.pathname + queryString;
 
-    const newRelativePathQuery = params.toString() ? `?${params.toString()}` : window.location.pathname;
+    window.history.replaceState(state, '', newUrl);
 
-    window.history.pushState({ path: newRelativePathQuery}, '', newRelativePathQuery);
 }
 
 function readURLParams(){
     const params = new URLSearchParams(window.location.search);
+    
+    if(params.has('search')){
+        const searchVal= params.get('search');
+        DOM.searchInput.value = searchVal;
+    }
 
     if (params.has('category')){
         state.filters.category = params.get('category');
@@ -269,17 +283,22 @@ function readURLParams(){
     }
 }
 
-function filterProducts(){
+function filterProducts(resetPage = true){
     state.filters.maxPrice = parseFloat(DOM.priceMax.value);
     state.filters.category = DOM.categorySelect.value;
+    const searchQuery = DOM.searchInput.value.toLowerCase().trim();
 
     state.filteredProducts = state.allProducts.filter(product => {
         const matchesPrice = product.price <= state.filters.maxPrice;
         const matchesCategory = state.filters.category === 'all' || product.category === state.filters.category;
-        return matchesPrice && matchesCategory;
+
+        const matchesSearch = product.name.toLowerCase().includes(searchQuery) || product.description.toLowerCase().includes(searchQuery);
+        return matchesPrice && matchesCategory&&matchesSearch;
     });
 
-    state.currentPage = 1;
+    if(resetPage){
+        state.currentPage =1;
+    }
     renderProducts(state.filteredProducts);
     updateURLParams();
 }

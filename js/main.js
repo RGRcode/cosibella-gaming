@@ -36,6 +36,8 @@ async function loadCatalogData(){
         state.allProducts = data;
         state.filteredProducts = [...data];
 
+        setupCategoryFilter();
+
         DOM.loader.style.display = 'none';
         DOM.grid.style.display = 'grid';
 
@@ -45,7 +47,7 @@ async function loadCatalogData(){
         DOM.loader.style.display='none';
         DOM.message.style.display='flex';
 
-        DOM.message.querySelector('.message-text').innerText=`Nie udało się pobrać produktów. (${error.message}. Upewnij się, że masz połącznie!)`;
+        DOM.message.querySelector('.message-text').innerText=`Nie udało się pobrać produktów. (${error.message}. Upewnij się, że masz połączenie!)`;
         console.error('Błąd pobierania danych', error);
     }
 }
@@ -57,7 +59,7 @@ function renderProducts(productsToRender){
     if(productsToRender.length === 0){
         DOM.grid.style.display='none';
         DOM.message.style.display='flex';
-        DOM.message.querySelector('.message-text').innerText=`Brak produktów spełnaijących wybrane kryteria wyszukiwania. Spróbuj zmienić filtry`;
+        DOM.message.querySelector('.message-text').innerText=`Brak produktów spełniających wybrane kryteria wyszukiwania. Spróbuj zmienić filtry`;
         return;
     }
 
@@ -68,7 +70,7 @@ function renderProducts(productsToRender){
         const statusClass = product.stock ? 'badge-available' : 'badge-unavailable';
         const statusText = product.stock ? 'Dostępny' : 'Wyprzedane';
 
-        const tagsHTML = product.tags.map(tag => `<span class="tag>${tag}</span>`).join('');
+        const tagsHTML = product.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
         return `
             <article class="product-card" data-id="${product.id}">
                 <div class="card-status ${statusClass}">${statusText}</div>
@@ -115,7 +117,23 @@ function initEventListeners(){
         DOM.priceValue.innerText = currentPrice;
 
         filterProducts();
-    })
+    });
+
+    DOM.categorySelect.addEventListener('change', () =>{
+    filterProducts();
+    });
+}
+
+
+
+function setupCategoryFilter(){
+    const allCategories = state.allProducts.map(product => product.category);
+    const uniqueCategories = [...new Set(allCategories)];
+
+    const optionsHTML = uniqueCategories.map(category =>{
+        return `<option value="${category}">${category}</option>`;
+    }).join('');
+    DOM.categorySelect.innerHTML = `<option value="all">Wszystkie sprzęty</option>`+optionsHTML;
 }
 
 
